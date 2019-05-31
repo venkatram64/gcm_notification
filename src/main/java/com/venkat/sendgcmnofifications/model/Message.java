@@ -4,6 +4,10 @@ public class Message {
 
     private String msg;
 
+    public Message(){
+        this.msg = "";
+    }
+
     public Message(String msg){
         this.msg = msg;
     }

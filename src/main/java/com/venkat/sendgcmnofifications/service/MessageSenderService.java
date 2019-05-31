@@ -33,7 +33,7 @@ public class MessageSenderService {
         return idList;
     }
 
-    public String sendMessage(String msg) throws IOException {
+    public String sendMessage(com.venkat.sendgcmnofifications.model.Message msg) throws IOException {
 
         String gcmApiKey = environment.getProperty("gcm.api.key");
         String senderKey = environment.getProperty("gcm_sender_id");
@@ -47,7 +47,7 @@ public class MessageSenderService {
                 .collapseKey("message")
                 .timeToLive(3)
                 .delayWhileIdle(true)
-                .addData("message", "Welcome to Push Notifications from Venkatram") //you can get this message on client side app
+                .addData("message", msg.getMsg()) //you can get this message on client side app
                 .build();
 
         if(idList.size() == 1){
@@ -56,6 +56,7 @@ public class MessageSenderService {
                 System.out.println("Push Notification Sent Successfully");
             }else {
                 System.out.println("ErrorCode " + result.getErrorCodeName());
+                return result.getErrorCodeName();
             }
         }else{
             MulticastResult multicastResult = sender.send(message, idList, 0);
@@ -64,6 +65,7 @@ public class MessageSenderService {
                     System.out.println("Push Notification Sent Successfully");
                 }else {
                     System.out.println("ErrorCode " + r.getErrorCodeName());
+                    return r.getErrorCodeName();
                 }
             }
         }
